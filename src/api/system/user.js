@@ -1,5 +1,4 @@
 import request from '@/utils/crudRequest'
-import { encrypt } from '@/utils/rsaEncrypt'
 
 export function login(data) {
   return request({
