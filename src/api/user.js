@@ -27,46 +27,9 @@ export function logout() {
   })
 }
 
-export function fetchList(data) {
+export function getCurrentUserInfo() {
   return bootrequest({
-    url: '/users?pageNo=' + data.pageNo + '&pageSize=' + data.pageSize + '&query=' + data.query,
+    url: '/user/@self',
     method: 'get'
-  })
-}
-
-export function fetchUser(id) {
-  return bootrequest({
-    url: '/user/' + id,
-    method: 'get'
-  })
-}
-
-export function updateUser(data, id) {
-  return bootrequest({
-    url: '/user/' + id,
-    method: 'patch',
-    data
-  })
-}
-
-export function deleteUser(id) {
-  return bootrequest({
-    url: '/user/' + id,
-    method: 'delete'
-  })
-}
-
-export function updatPassword(id, data) {
-  return bootrequest({
-    url: '/user/' + id + '/password',
-    method: 'put',
-    data
-  })
-}
-export function creatUser(data) {
-  return bootrequest({
-    url: '/users',
-    method: 'post',
-    data
   })
 }

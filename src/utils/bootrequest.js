@@ -1,6 +1,6 @@
 import axios from 'axios'
-
-// import store from '@/store'
+import Cookies from 'js-cookie'
+import store from '@/store'
 // import { getToken } from '@/utils/auth'
 
 // create an axios instance
@@ -77,6 +77,48 @@ service.interceptors.response.use(
   error => {
     console.log('error了')
     console.log('err' + error) // for debug
+    let code = 0
+    try {
+      code = error.response.data.status
+    } catch (e) {
+      if (error.toString().indexOf('Error: timeout') !== -1) {
+        Notification.error({
+          title: '网络请求超时',
+          duration: 5000
+        })
+        return Promise.reject(error)
+      }
+    }
+    console.log(code)
+    if (code) {
+      if (code === 403) {
+        const errorMsg = error.response.data.message
+        if (errorMsg !== undefined) {
+          Notification.error({
+            title: '页面过期，请重新登录' + errorMsg,
+            duration: 5000
+          })
+        }
+        store.dispatch('user/logout').then(() => {
+          // 用户登录界面提示
+          Cookies.set('point', 403)
+          // location.reload()
+        })
+      } else {
+        const errorMsg = error.response.data.message
+        if (errorMsg !== undefined) {
+          Notification.error({
+            title: errorMsg,
+            duration: 5000
+          })
+        }
+      }
+    } else {
+      Notification.error({
+        title: '接口请求失败',
+        duration: 5000
+      })
+    }
     return Promise.reject(error)
   }
 )

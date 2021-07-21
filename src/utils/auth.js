@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie'
 
 const TokenKey = 'vue_demo_token'
-const Session = 'SESSION'
 
 export function getToken() {
   return Cookies.get(TokenKey)
